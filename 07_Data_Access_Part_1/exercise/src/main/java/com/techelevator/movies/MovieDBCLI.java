@@ -79,7 +79,6 @@ public class MovieDBCLI {
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setUrl("jdbc:postgresql://localhost:5432/MovieDB");
 		dataSource.setUsername("postgres");
-		dataSource.setPassword("postgres1");
 
 		MovieDBCLI application = new MovieDBCLI(dataSource);
 		application.run();
