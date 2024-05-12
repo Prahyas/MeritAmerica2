@@ -86,7 +86,6 @@ public class EmployeeProjectsCLI {
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setUrl("jdbc:postgresql://localhost:5432/EmployeeProjects");
 		dataSource.setUsername("postgres");
-		dataSource.setPassword("postgres1");
 
 		EmployeeProjectsCLI application = new EmployeeProjectsCLI(dataSource);
 		application.run();
