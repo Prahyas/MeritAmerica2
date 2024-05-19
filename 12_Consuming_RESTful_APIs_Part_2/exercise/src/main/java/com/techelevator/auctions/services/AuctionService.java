@@ -1,5 +1,6 @@
 package com.techelevator.auctions.services;
 
+import com.techelevator.auctions.model.Auction;
 import com.techelevator.util.BasicLogger;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -8,8 +9,6 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
-import com.techelevator.auctions.model.Auction;
-
 public class AuctionService {
 
     public static String API_BASE_URL = "http://localhost:3000/auctions";
@@ -17,18 +16,73 @@ public class AuctionService {
 
 
     public Auction add(Auction newAuction) {
-        // place code here
-        return null;
+        Auction auctionToAdd = null;
+        try {
+            newAuction.setTitle("Beautiful Portrait");
+            newAuction.setDescription("Expensive portrait of a beautiful woman.");
+            newAuction.setUser("user@user.com");
+            newAuction.setCurrentBid(100.00);
+
+            RestTemplate restTemplate = new RestTemplate();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            HttpEntity<Auction> entity = new HttpEntity<>(newAuction, headers);
+            auctionToAdd = restTemplate.postForObject(API_BASE_URL, entity, Auction.class);
+
+        } catch (ResourceAccessException e) {
+            System.out.println(e.getMessage());
+
+        } catch (RestClientResponseException e) {
+            System.out.println(e.getRawStatusCode());
+
+        }
+        return auctionToAdd;
     }
 
     public boolean update(Auction updatedAuction) {
-        // place code here
-        return false;
+        Boolean updateStatus = false;
+        try {
+            updatedAuction.setTitle("Beautiful Portrait");
+            updatedAuction.setDescription("Expensive portrait of a beautiful woman.");
+            updatedAuction.setUser("user@user.com");
+            updatedAuction.setCurrentBid(100.00);
+
+            RestTemplate restTemplate = new RestTemplate();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            HttpEntity<Auction> entity = new HttpEntity<>(updatedAuction, headers);
+            restTemplate.put(API_BASE_URL + "/" + updatedAuction.getId(), entity, Auction.class);
+
+            updateStatus = true;
+
+
+        } catch (ResourceAccessException e) {
+            System.out.println(e.getMessage());
+
+        } catch (RestClientResponseException e) {
+            System.out.println(e.getRawStatusCode());
+
+        }
+        return updateStatus;
     }
 
     public boolean delete(int auctionId) {
-        // place code here
-        return false;
+        Boolean deleteStatus = false;
+        try {
+            restTemplate.delete(API_BASE_URL + "/" + auctionId, Auction.class);
+            deleteStatus = true;
+        } catch (ResourceAccessException e) {
+            System.out.println(e.getMessage());
+
+        } catch (RestClientResponseException e) {
+            System.out.println(e.getRawStatusCode());
+
+        }
+        return deleteStatus;
     }
 
     public Auction[] getAllAuctions() {
