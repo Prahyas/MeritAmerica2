@@ -7,6 +7,8 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Map;
+
 
 public class AuthenticationService {
 
@@ -23,6 +25,8 @@ public class AuthenticationService {
         String token = null;
         try {
             // Add code here to send the request to the API and get the token from the response.
+            ResponseEntity<Map> response = restTemplate.exchange(API_BASE_URL + "login", HttpMethod.POST, entity, Map.class);
+            token = (String) response.getBody().get("token");
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
